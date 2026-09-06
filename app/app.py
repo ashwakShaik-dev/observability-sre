@@ -1,8 +1,12 @@
 from flask import Flask, Response
 from prometheus_client import Counter, Histogram, generate_latest
 import time
+import logging
 
 app = Flask(__name__)
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 REQUEST_COUNT = Counter(
     "http_requests_total",
@@ -28,6 +32,14 @@ def after_request(response):
     from flask import request, g
 
     latency = time.time() - g.start_time
+
+    logger.info(
+        "Request: %s %s | Status: %s | Latency: %.3fs",
+        request.method,
+        request.path,
+        response.status_code,
+        latency
+    )
 
     REQUEST_COUNT.labels(
         request.method,
