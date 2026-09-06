@@ -57,6 +57,10 @@ def health():
 def api():
     return "API response"
 
+@app.route("/error")
+def error():
+    return "Internal Server Error", 500
+
 
 @app.route("/metrics")
 def metrics():
