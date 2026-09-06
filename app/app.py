@@ -55,6 +55,7 @@ def health():
 
 @app.route("/api")
 def api():
+    time.sleep(1)
     return "API response"
 
 @app.route("/error")
