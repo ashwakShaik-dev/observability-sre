@@ -1,2 +1,4 @@
 flask
-prometheus-client
+prometheus_client
+opentelemetry-distro
+opentelemetry-exporter-otlp
