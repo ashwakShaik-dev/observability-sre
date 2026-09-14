@@ -20,12 +20,10 @@ REQUEST_LATENCY = Histogram(
     ["method", "endpoint"]
 )
 
-
 @app.before_request
 def before_request():
     from flask import g
     g.start_time = time.time()
-
 
 @app.after_request
 def after_request(response):
@@ -54,16 +52,29 @@ def after_request(response):
 
     return response
 
-
 @app.route("/")
 def home():
     return "SRE Lab Application is running!"
 
+health_broken = False
+
+@app.route("/break")
+def break_health():
+    global health_broken
+    health_broken = True
+    return "Health check failure enabled", 500
+
+@app.route("/fix")
+def fix_health():
+    global health_broken
+    health_broken = False
+    return "Health check restored", 200
 
 @app.route("/health")
 def health():
-    return "healthy"
-
+    if health_broken:
+        return "unhealthy", 500
+    return "healthy", 200
 
 @app.route("/api")
 def api():
@@ -74,14 +85,12 @@ def api():
 def error():
     return "Internal Server Error", 500
 
-
 @app.route("/metrics")
 def metrics():
     return Response(
         generate_latest(),
         mimetype="text/plain"
     )
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

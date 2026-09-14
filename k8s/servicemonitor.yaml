@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: observability-api
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: observability-api
+  namespaceSelector:
+    matchNames:
+      - default
+  endpoints:
+    - targetPort: 5000
+      path: /metrics
