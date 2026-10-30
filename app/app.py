@@ -54,7 +54,7 @@ def after_request(response):
 
 @app.route("/")
 def home():
-    return "SRE Lab Application is running!"
+    return "SRE Observability Application v2 is running"
 
 health_broken = False
 
