@@ -70,6 +70,10 @@ def fix_health():
     health_broken = False
     return "Health check restored", 200
 
+@app.route("/live")
+def live():
+    return "alive", 200
+
 @app.route("/health")
 def health():
     if health_broken:
